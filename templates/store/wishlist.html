@@ -1,0 +1,9 @@
+<!-- templates/store/wishlist.html -->
+<h2>Your Wishlist</h2>
+{% for item in wishlist_items %}
+<div>
+    <h3>{{ item.product.name }}</h3>
+    <a href="{% url 'remove_from_wishlist' item.id %}">Remove</a>
+    <a href="{% url 'move_to_cart' item.id %}">Move to Cart</a>
+</div>
+{% endfor %}

@@ -1,0 +1,16 @@
+<!-- templates/store/cart.html -->
+<h2>Your Cart</h2>
+{% for item in cart_items %}
+<div>
+    <h3>{{ item.product.name }}</h3>
+    <p>Price: {{ item.product.price }}</p>
+    <form method="post" action="{% url 'update_cart_quantity' item.id %}">
+        {% csrf_token %}
+        <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+        <button type="submit">Update Quantity</button>
+    </form>
+    <a href="{% url 'remove_from_cart' item.id %}">Remove</a>
+</div>
+{% endfor %}
+<p>Total: {{ total_price }}</p>
+<a href="{% url 'checkout' %}">Proceed to Checkout</a>

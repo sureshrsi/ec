@@ -1,0 +1,10 @@
+<!-- templates/store/product_detail.html -->
+<h2>{{ product.name }}</h2>
+<div>
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:300px;height:300px;">
+    <p><strong>Price:</strong> ₹{{ product.price }}</p>
+    <p>{{ product.description }}</p>
+    <a href="{% url 'add_to_cart' product.slug %}">Add to Cart</a>
+    <a href="{% url 'add_to_wishlist' product.slug %}">Add to Wishlist</a>
+</div>
+<a href="{% url 'product_list' %}">Back to Products</a>

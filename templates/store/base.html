@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}My E-commerce Site{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    {% load static %}
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav>
+            <div class="container">
+                <a href="{% url 'product_list' %}" class="logo">My E-commerce Site</a>
+                <ul class="nav-links">
+                    <li><a href="{% url 'product_list' %}">Home</a></li>
+                    <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+                    <li><a href="{% url 'cart' %}">Cart</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'signout' %}">Sign Out</a></li>
+                    {% else %}
+                    <li><a href="{% url 'signin' %}">Sign In</a></li>
+                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Filter</h3>
+            <form method="GET" action="{% url 'product_list' %}">
+                <div class="filter-group">
+                    <h4>Price Range</h4>
+                    <label for="min-price">Min:</label>
+                    <input type="number" id="min-price" name="min_price" value="{{ request.GET.min_price }}"
+                        placeholder="0" />
+                    <label for="max-price">Max:</label>
+                    <input type="number" id="max-price" name="max_price" value="{{ request.GET.max_price }}"
+                        placeholder="10000" />
+                </div>
+                <div class="filter-group">
+                    <button type="submit">Apply Filters</button>
+                </div>
+            </form>
+        </aside>
+
+        <main>
+            {% block content %}
+            <!-- Content from child templates will be injected here -->
+            {% endblock %}
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; {{ current_year }} My E-commerce Site. All rights reserved.</p>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!-- templates/store/payment.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+</head>
+
+<body>
+    <h1>Complete Your Payment</h1>
+    <form action="{% url 'payment_success' %}" method="POST" id="payment-form">
+        {% csrf_token %}
+        <input type="hidden" name="order_id" value="{{ order_id }}">
+        <input type="hidden" name="amount" value="{{ amount }}">
+        <script src="https://checkout.razorpay.com/v1/checkout.js" data-key="{{ razorpay_key }}"
+            data-amount="{{ amount }}" data-currency="INR" data-order_id="{{ order_id }}" data-buttontext="Pay Now"
+            data-name="My E-commerce Site" data-description="Payment for your order"
+            data-image="{% static 'images/logo.png' %}" data-prefill.name="{{ user.username }}"
+            data-prefill.email="{{ user.email }}">
+            </script>
+        <input type="hidden" name="signature" id="signature">
+    </form>
+    <script>
+        // Optional: Handle payment response
+        document.getElementById('payment-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var form = event.target;
+
+            Razorpay.on('payment.failed', function (response) {
+                // Handle payment failure
+                alert('Payment failed. Please try again.');
+            });
+
+            Razorpay.on('payment.success', function (response) {
+                // Handle payment success
+                document.getElementById('signature').value = response.signature;
+                form.submit();
+            });
+        });
+    </script>
+</body>
+
+</html>
